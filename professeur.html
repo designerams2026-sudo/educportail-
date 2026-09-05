@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professeur — EduPortail</title>
+<link rel="stylesheet" href="style.css">
+<style>:root{--role-accent:var(--prof);--role-soft:var(--prof-soft);}</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">P</div>
+      <div class="brand-text">EduPortail<small>Lycée Marguerite Jauzelon</small></div>
+    </a>
+    <span class="role-tag"><span class="dot"></span>Professeur</span>
+
+    <nav class="nav">
+      <div class="nav-label">Vue d'ensemble</div>
+      <a class="navlink active" data-nav="tableau">Tableau de bord</a>
+
+      <div class="nav-label">Pédagogie</div>
+      <a class="navlink" data-nav="classes">Mes classes</a>
+      <a class="navlink" data-nav="livret">Livret scolaire</a>
+
+      <div class="nav-label">Communication</div>
+      <a class="navlink" data-nav="messagerie">Messagerie (Mailo)</a>
+      <a class="navlink" data-nav="site">Site web du lycée</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="user-chip">
+        <div class="avatar">MB</div>
+        <div><div class="user-name">Mme Boyer</div><div class="user-role">Mathématiques</div></div>
+      </div>
+      <a class="logout" href="index.html">← Changer d'espace</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- TABLEAU DE BORD -->
+    <section id="view-tableau" class="view">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Vue d'ensemble</div>
+          <h1 class="page-title">Bonjour, Mme Boyer</h1>
+          <p class="page-sub">Vous intervenez dans 2 établissements : Lycée Marguerite Jauzelon (compte actif) et Lycée Léon de Lépervanche.</p>
+        </div>
+      </div>
+      <div class="grid grid-3" style="margin-bottom:22px">
+        <div class="stat"><div class="n">4</div><div class="l">Classes cette année</div></div>
+        <div class="stat"><div class="n">112</div><div class="l">Élèves suivis</div></div>
+        <div class="stat"><div class="n">6</div><div class="l">Appréciations à finaliser</div></div>
+      </div>
+      <div class="section">
+        <div class="section-head"><div><h2>Mes classes</h2></div></div>
+        <table>
+          <thead><tr><th>Classe</th><th>Effectif</th><th>Prochain cours</th></tr></thead>
+          <tbody>
+            <tr><td>1re Générale — Maths spécialité</td><td>32</td><td>Lundi 8h — Salle 214</td></tr>
+            <tr><td>2nde 4 — Mathématiques</td><td>30</td><td>Lundi 10h — Salle 108</td></tr>
+            <tr><td>Terminale — Maths expertes</td><td>18</td><td>Mardi 14h — Salle 214</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MES CLASSES -->
+    <section id="view-classes" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Pédagogie</div><h1 class="page-title">Mes classes</h1><p class="page-sub">Détail des classes et élèves suivis.</p></div>
+      </div>
+      <div class="tabs" data-panels="classe">
+        <button class="tab active" data-target="cl-1re" data-panels="classe">1re Générale</button>
+        <button class="tab" data-target="cl-2nde" data-panels="classe">2nde 4</button>
+        <button class="tab" data-target="cl-term" data-panels="classe">Terminale</button>
+      </div>
+      <div id="cl-1re" class="tabpanel active" data-group="classe">
+        <div class="section">
+          <table><thead><tr><th>Élève</th><th>INE</th><th>Moyenne</th></tr></thead>
+          <tbody id="tbl-cl-1re"></tbody></table>
+        </div>
+      </div>
+      <div id="cl-2nde" class="tabpanel" data-group="classe">
+        <div class="section"><div class="empty">30 élèves — détail non chargé dans cette démonstration.</div></div>
+      </div>
+      <div id="cl-term" class="tabpanel" data-group="classe">
+        <div class="section"><div class="empty">18 élèves — détail non chargé dans cette démonstration.</div></div>
+      </div>
+    </section>
+
+    <!-- LIVRET -->
+    <section id="view-livret" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Pédagogie</div><h1 class="page-title">Livret scolaire — ma matière</h1><p class="page-sub">Saisie de la moyenne et de l'appréciation, en attendant la remontée automatique depuis Pronote.</p></div>
+      </div>
+      <form class="section grid grid-3" onsubmit="return saisirAppreciation(event)">
+        <div class="field"><label>Élève</label>
+          <select id="ap-eleve" required></select>
+        </div>
+        <div class="field"><label>Moyenne annuelle</label><input type="text" id="ap-moyenne" required placeholder="15/20"></div>
+        <div class="field" style="grid-column:span 1"><label>Appréciation</label><input type="text" id="ap-appreciation" required></div>
+        <div style="grid-column:1/-1"><button class="btn btn-primary" type="submit">Enregistrer</button></div>
+      </form>
+      <div class="section">
+        <table><thead><tr><th>Élève</th><th>Moyenne</th><th>Appréciation</th></tr></thead>
+          <tbody id="tbl-appreciations"></tbody></table>
+      </div>
+    </section>
+
+    <!-- MESSAGERIE -->
+    <section id="view-messagerie" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Communication</div><h1 class="page-title">Messagerie (Mailo)</h1><p class="page-sub">Échanges avec la direction, la vie scolaire et les familles.</p></div>
+      </div>
+      <div class="mail-layout">
+        <div class="mail-list" id="mail-list"></div>
+        <div class="mail-body" id="mail-body"></div>
+      </div>
+    </section>
+
+    <!-- SITE WEB DU LYCÉE -->
+    <section id="view-site" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Communication</div><h1 class="page-title">Site web du lycée</h1><p class="page-sub">Actualités et informations publiques de l'établissement.</p></div>
+      </div>
+      <div class="section">
+        <div class="grid grid-2">
+          <div class="stat"><div class="n" style="font-size:16px">Forum des métiers</div><div class="l">Publié le 12 novembre — Hall du lycée</div></div>
+          <div class="stat"><div class="n" style="font-size:16px">Conseils de classe du 2ᵉ trimestre</div><div class="l">Publié le 2 décembre — Calendrier détaillé</div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script>
+  function go(id){
+    document.querySelectorAll('.view').forEach(v=>v.style.display='none');
+    document.getElementById('view-'+id).style.display='block';
+    document.querySelectorAll('.navlink').forEach(a=>a.classList.toggle('active', a.dataset.nav===id));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.navlink').forEach(a=>{
+    a.addEventListener('click', e=>{ e.preventDefault(); go(a.dataset.nav); });
+  });
+
+  const CLASSE_1RE = [
+    {nom:"Payet Lény", ine:"0741234567A", moyenne:"14,5/20"},
+    {nom:"Fontaine Ilan", ine:"0741234571E", moyenne:"11,2/20"},
+  ];
+  document.getElementById('tbl-cl-1re').innerHTML = CLASSE_1RE.map(e=>
+    `<tr><td>${e.nom}</td><td><code>${e.ine}</code></td><td>${e.moyenne}</td></tr>`).join('');
+
+  const apSelect = document.getElementById('ap-eleve');
+  CLASSE_1RE.forEach(e=>{
+    const opt = document.createElement('option'); opt.textContent = e.nom; apSelect.appendChild(opt);
+  });
+
+  const APPRECIATIONS = [];
+  function renderApp(){
+    document.getElementById('tbl-appreciations').innerHTML = APPRECIATIONS.length
+      ? APPRECIATIONS.map(a=>`<tr><td>${a.eleve}</td><td>${a.moyenne}</td><td>${a.appreciation}</td></tr>`).join('')
+      : `<tr><td colspan="3" class="muted">Aucune appréciation saisie pour l'instant.</td></tr>`;
+  }
+  renderApp();
+  function saisirAppreciation(ev){
+    ev.preventDefault();
+    APPRECIATIONS.push({
+      eleve: document.getElementById('ap-eleve').value,
+      moyenne: document.getElementById('ap-moyenne').value,
+      appreciation: document.getElementById('ap-appreciation').value
+    });
+    renderApp();
+    toast('Appréciation enregistrée');
+    ev.target.reset();
+    return false;
+  }
+
+  let activeMail = 0;
+  function renderMail(){
+    document.getElementById('mail-list').innerHTML = MAILS.map((m,i)=>
+      `<div class="mail-item ${i===activeMail?'active':''}" onclick="selectMail(${i})">
+        <div class="from">${m.from}</div><div class="subj">${m.subject}</div><div class="prev">${m.preview}</div>
+      </div>`).join('');
+    const m = MAILS[activeMail];
+    document.getElementById('mail-body').innerHTML = `<h3 style="margin-bottom:4px">${m.subject}</h3><div class="muted" style="font-size:13px;margin-bottom:16px">De ${m.from}</div><div style="white-space:pre-line;font-size:14px">${m.body}</div>`;
+  }
+  function selectMail(i){ activeMail=i; renderMail(); }
+  renderMail();
+</script>
+</body>
+</html>

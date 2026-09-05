@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent — EduPortail</title>
+<link rel="stylesheet" href="style.css">
+<style>:root{--role-accent:var(--parent);--role-soft:var(--parent-soft);}</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">PA</div>
+      <div class="brand-text">EduPortail<small>Lycée Marguerite Jauzelon</small></div>
+    </a>
+    <span class="role-tag"><span class="dot"></span>Parent</span>
+
+    <nav class="nav">
+      <div class="nav-label">Vue d'ensemble</div>
+      <a class="navlink active" data-nav="tableau">Tableau de bord</a>
+
+      <div class="nav-label">Suivi de Lény</div>
+      <a class="navlink" data-nav="livret">Livret scolaire</a>
+      <a class="navlink" data-nav="orientation">Orientation à valider</a>
+
+      <div class="nav-label">Communication</div>
+      <a class="navlink" data-nav="messagerie">Messagerie (Mailo)</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="user-chip">
+        <div class="avatar">MP</div>
+        <div><div class="user-name">Mme Payet</div><div class="user-role">Responsable de Lény Payet</div></div>
+      </div>
+      <a class="logout" href="index.html">← Changer d'espace</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- TABLEAU DE BORD -->
+    <section id="view-tableau" class="view">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Vue d'ensemble</div>
+          <h1 class="page-title">Bonjour, Mme Payet</h1>
+          <p class="page-sub">Suivi de Lény Payet — 1re Générale, Lycée Marguerite Jauzelon.</p>
+        </div>
+      </div>
+      <div class="grid grid-3" style="margin-bottom:22px">
+        <div class="stat"><div class="n">14,1/20</div><div class="l">Moyenne générale de Lény</div></div>
+        <div class="stat"><div class="n">1</div><div class="l">Vœu d'orientation à valider</div></div>
+        <div class="stat"><div class="n">1</div><div class="l">Nouveau message</div></div>
+      </div>
+      <div class="note">Le compte parent est rattaché à l'INE de l'enfant par le chef d'établissement. Vous pouvez suivre la scolarité de Lény et valider ses vœux d'orientation.</div>
+    </section>
+
+    <!-- LIVRET -->
+    <section id="view-livret" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Suivi de Lény</div><h1 class="page-title">Livret scolaire</h1><p class="page-sub">Moyennes et appréciations de l'année en cours.</p></div>
+      </div>
+      <div class="section">
+        <table>
+          <thead><tr><th>Matière</th><th>Moyenne annuelle</th><th>Appréciation</th></tr></thead>
+          <tbody>
+            <tr><td>Mathématiques</td><td>14,5/20</td><td>Bon trimestre, poursuivre les efforts en géométrie.</td></tr>
+            <tr><td>Français</td><td>12,8/20</td><td>Participation à renforcer à l'oral.</td></tr>
+            <tr><td>Histoire-Géographie</td><td>15,0/20</td><td>Très bon investissement, continue ainsi.</td></tr>
+            <tr><td>Anglais</td><td>13,6/20</td><td>Bonne aisance à l'oral.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ORIENTATION -->
+    <section id="view-orientation" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Suivi de Lény</div><h1 class="page-title">Orientation — validation</h1><p class="page-sub">Lény a choisi un vœu depuis son espace élève. Vous pouvez le valider ou le refuser.</p></div>
+      </div>
+      <div class="section">
+        <div class="section-head">
+          <div><h2>Vœu proposé par Lény</h2></div>
+          <span class="badge badge-amber">En attente de votre validation</span>
+        </div>
+        <p style="font-size:15px;margin:0 0 18px"><strong>Voie choisie :</strong> Voie Générale</p>
+        <div class="flex gap-8">
+          <button class="btn btn-primary" onclick="validerVoeu(true)">Valider le vœu</button>
+          <button class="btn btn-danger" onclick="validerVoeu(false)">Demander une modification</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MESSAGERIE -->
+    <section id="view-messagerie" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Communication</div><h1 class="page-title">Messagerie (Mailo)</h1><p class="page-sub">Échanges avec l'établissement au sujet de Lény.</p></div>
+      </div>
+      <div class="mail-layout">
+        <div class="mail-list" id="mail-list"></div>
+        <div class="mail-body" id="mail-body"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script>
+  function go(id){
+    document.querySelectorAll('.view').forEach(v=>v.style.display='none');
+    document.getElementById('view-'+id).style.display='block';
+    document.querySelectorAll('.navlink').forEach(a=>a.classList.toggle('active', a.dataset.nav===id));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.navlink').forEach(a=>{
+    a.addEventListener('click', e=>{ e.preventDefault(); go(a.dataset.nav); });
+  });
+
+  function validerVoeu(accepte){
+    toast(accepte ? 'Vœu validé et transmis à l\'établissement' : 'Demande de modification envoyée à Lény');
+  }
+
+  let activeMail = 0;
+  function renderMail(){
+    document.getElementById('mail-list').innerHTML = MAILS.map((m,i)=>
+      `<div class="mail-item ${i===activeMail?'active':''}" onclick="selectMail(${i})">
+        <div class="from">${m.from}</div><div class="subj">${m.subject}</div><div class="prev">${m.preview}</div>
+      </div>`).join('');
+    const m = MAILS[activeMail];
+    document.getElementById('mail-body').innerHTML = `<h3 style="margin-bottom:4px">${m.subject}</h3><div class="muted" style="font-size:13px;margin-bottom:16px">De ${m.from}</div><div style="white-space:pre-line;font-size:14px">${m.body}</div>`;
+  }
+  function selectMail(i){ activeMail=i; renderMail(); }
+  renderMail();
+</script>
+</body>
+</html>

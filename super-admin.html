@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super administrateur — EduPortail</title>
+<link rel="stylesheet" href="style.css">
+<style>:root{--role-accent:var(--admin);--role-soft:var(--admin-soft);}</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">SA</div>
+      <div class="brand-text">EduPortail<small>Académie de La Réunion</small></div>
+    </a>
+    <span class="role-tag"><span class="dot"></span>Super administrateur</span>
+
+    <nav class="nav">
+      <div class="nav-label">Vue d'ensemble</div>
+      <a href="#tableau" class="navlink active" data-nav="tableau">Tableau de bord</a>
+
+      <div class="nav-label">Établissements</div>
+      <a href="#etablissements" class="navlink" data-nav="etablissements">Établissements</a>
+      <a href="#nouvel-etab" class="navlink" data-nav="nouvel-etab">Créer un établissement</a>
+
+      <div class="nav-label">Élèves</div>
+      <a href="#inscription" class="navlink" data-nav="inscription">Inscription élève</a>
+
+      <div class="nav-label">Comptes</div>
+      <a href="#comptes-chefs" class="navlink" data-nav="comptes-chefs">Comptes chefs d'établissement</a>
+
+      <div class="nav-label">Communication</div>
+      <a href="#messagerie" class="navlink" data-nav="messagerie">Messagerie (Mailo)</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="user-chip">
+        <div class="avatar">SA</div>
+        <div>
+          <div class="user-name">Rectorat — Direction</div>
+          <div class="user-role">Super administrateur</div>
+        </div>
+      </div>
+      <a class="logout" href="index.html">← Changer d'espace</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- TABLEAU DE BORD -->
+    <section id="view-tableau" class="view">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Vue d'ensemble</div>
+          <h1 class="page-title">Tableau de bord académique</h1>
+          <p class="page-sub">Aperçu global des établissements et comptes de la plateforme.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-4" style="margin-bottom:22px">
+        <div class="stat"><div class="n" id="stat-etabs">—</div><div class="l">Établissements enregistrés</div></div>
+        <div class="stat"><div class="n">5</div><div class="l">Espaces actifs</div></div>
+        <div class="stat"><div class="n" id="stat-eleves">—</div><div class="l">Élèves inscrits (démo)</div></div>
+        <div class="stat"><div class="n">3</div><div class="l">Messages non lus</div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <div><h2>Derniers établissements ajoutés</h2><p>Extrait — voir l'onglet Établissements pour la liste complète.</p></div>
+          <button class="btn btn-sm" onclick="go('etablissements')">Voir tout</button>
+        </div>
+        <table>
+          <thead><tr><th>Établissement</th><th>RNE</th><th>Commune</th><th>Type</th></tr></thead>
+          <tbody id="tbl-apercu"></tbody>
+        </table>
+      </div>
+
+      <div class="note">Chaque <strong>RNE</strong> identifie un établissement (jamais un élève). L'élève est identifié par son <strong>INE</strong>, qui permet de le retrouver et de rattacher ses bulletins d'un établissement à l'autre.</div>
+    </section>
+
+    <!-- ÉTABLISSEMENTS -->
+    <section id="view-etablissements" class="view" style="display:none">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Établissements</div>
+          <h1 class="page-title">Établissements de La Réunion</h1>
+          <p class="page-sub">Liste académique par RNE. Base pré-remplie pour la démonstration, à synchroniser avec l'annuaire officiel.</p>
+        </div>
+        <button class="btn btn-primary" onclick="go('nouvel-etab')">+ Créer un établissement</button>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <div class="field" style="margin:0;width:280px"><input type="text" id="etab-search" placeholder="Rechercher par nom, commune ou RNE…"></div>
+        </div>
+        <table>
+          <thead><tr><th>Établissement</th><th>RNE</th><th>Type</th><th>Commune</th><th>Adresse Pronote</th><th></th></tr></thead>
+          <tbody id="tbl-etabs"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CRÉER UN ÉTABLISSEMENT -->
+    <section id="view-nouvel-etab" class="view" style="display:none">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Établissements</div>
+          <h1 class="page-title">Créer un établissement</h1>
+          <p class="page-sub">Un établissement correspond à une adresse Pronote unique. Un professeur intervenant dans deux lycées possède deux comptes établissement distincts.</p>
+        </div>
+      </div>
+
+      <form class="section" onsubmit="return creerEtablissement(event)">
+        <div class="grid grid-2">
+          <div class="field"><label>Nom de l'établissement</label><input type="text" id="ne-nom" required placeholder="Lycée…"></div>
+          <div class="field"><label>Code RNE / UAI</label><input type="text" id="ne-rne" required placeholder="9740000X" maxlength="8"></div>
+          <div class="field"><label>Type</label>
+            <select id="ne-type">
+              <option>LGT — Lycée général et technologique</option>
+              <option>LP — Lycée professionnel</option>
+              <option>LPO — Lycée polyvalent</option>
+            </select>
+          </div>
+          <div class="field"><label>Commune</label><input type="text" id="ne-commune" required placeholder="Saint-Denis"></div>
+          <div class="field" style="grid-column:1/-1"><label>Adresse Pronote</label>
+            <input type="text" id="ne-pronote" required placeholder="moneetablissement.pronote.ac-reunion.fr">
+            <span class="hint">Une adresse Pronote = un établissement. Un second lycée pour un même professeur se déclare comme un établissement séparé.</span>
+          </div>
+        </div>
+        <div class="flex gap-8" style="margin-top:8px">
+          <button class="btn btn-primary" type="submit">Créer l'établissement</button>
+          <button class="btn" type="button" onclick="go('etablissements')">Annuler</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- INSCRIPTION ÉLÈVE -->
+    <section id="view-inscription" class="view" style="display:none">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Élèves</div>
+          <h1 class="page-title">Inscription élève</h1>
+          <p class="page-sub">L'élève est rattaché par son INE. Le RNE ci-dessous ne fait que désigner l'établissement d'affectation.</p>
+        </div>
+      </div>
+
+      <form class="section" onsubmit="return inscrireEleve(event)">
+        <div class="grid grid-2">
+          <div class="field"><label>INE</label><input type="text" required placeholder="0741234567A" maxlength="11">
+            <span class="hint">Identifiant National Élève — sert à retrouver l'élève et ses bulletins d'un établissement à l'autre.</span>
+          </div>
+          <div class="field"><label>Établissement d'affectation (RNE)</label>
+            <select id="ie-etab" required></select>
+          </div>
+          <div class="field"><label>Nom</label><input type="text" required></div>
+          <div class="field"><label>Prénom</label><input type="text" required></div>
+          <div class="field"><label>Date de naissance</label><input type="date" required></div>
+          <div class="field"><label>Classe</label><input type="text" placeholder="2nde 4, 1re Générale…" required></div>
+          <div class="field"><label>Téléphone du responsable</label>
+            <div class="input-group">
+              <span class="prefix">+262</span>
+              <input type="tel" placeholder="692 00 00 00">
+            </div>
+            <span class="hint">Indicatif modifiable si le responsable réside hors de La Réunion.</span>
+          </div>
+          <div class="field"><label>E-mail du responsable</label><input type="email" placeholder="parent@exemple.re"></div>
+        </div>
+        <div class="flex gap-8" style="margin-top:8px">
+          <button class="btn btn-primary" type="submit">Inscrire l'élève</button>
+          <button class="btn" type="reset">Réinitialiser</button>
+        </div>
+      </form>
+
+      <div class="section">
+        <div class="section-head"><div><h2>Élèves inscrits récemment</h2></div></div>
+        <table>
+          <thead><tr><th>Élève</th><th>INE</th><th>Classe</th><th>Établissement</th></tr></thead>
+          <tbody id="tbl-eleves-recents"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COMPTES CHEFS D'ÉTABLISSEMENT -->
+    <section id="view-comptes-chefs" class="view" style="display:none">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Comptes</div>
+          <h1 class="page-title">Comptes chefs d'établissement</h1>
+          <p class="page-sub">Un compte chef d'établissement par lycée. C'est ensuite le chef d'établissement qui crée les comptes professeurs, élèves et parents de son lycée.</p>
+        </div>
+        <button class="btn btn-primary" onclick="toast('Formulaire de création — prototype')">+ Créer un compte</button>
+      </div>
+      <div class="section">
+        <table>
+          <thead><tr><th>Établissement</th><th>Chef d'établissement</th><th>Statut</th><th></th></tr></thead>
+          <tbody id="tbl-chefs"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MESSAGERIE -->
+    <section id="view-messagerie" class="view" style="display:none">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Communication</div>
+          <h1 class="page-title">Messagerie académique (Mailo)</h1>
+          <p class="page-sub">Boîte de messages du super administrateur, commune aux échanges avec les établissements.</p>
+        </div>
+      </div>
+      <div class="mail-layout">
+        <div class="mail-list" id="mail-list"></div>
+        <div class="mail-body" id="mail-body"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script>
+  document.documentElement.style.setProperty('--role-accent', 'var(--admin)');
+
+  function go(id){
+    document.querySelectorAll('.view').forEach(v=>v.style.display='none');
+    document.getElementById('view-'+id).style.display='block';
+    document.querySelectorAll('.navlink').forEach(a=>a.classList.toggle('active', a.dataset.nav===id));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.navlink').forEach(a=>{
+    a.addEventListener('click', e=>{ e.preventDefault(); go(a.dataset.nav); });
+  });
+
+  // Peuplement des tableaux
+  document.getElementById('stat-etabs').textContent = ETABLISSEMENTS.length;
+  document.getElementById('stat-eleves').textContent = ELEVES.length;
+
+  function rowEtab(e){
+    return `<tr><td><strong>${e.nom}</strong></td><td><code>${e.rne}</code></td><td><span class="badge badge-grey">${e.type}</span></td><td>${e.commune}</td><td class="muted">${e.pronote}</td><td></td></tr>`;
+  }
+  document.getElementById('tbl-apercu').innerHTML = ETABLISSEMENTS.slice(0,5).map(e=>
+    `<tr><td><strong>${e.nom}</strong></td><td><code>${e.rne}</code></td><td>${e.commune}</td><td><span class="badge badge-grey">${e.type}</span></td></tr>`
+  ).join('');
+
+  function renderEtabs(list){
+    document.getElementById('tbl-etabs').innerHTML = list.map(e=>
+      `<tr><td><strong>${e.nom}</strong></td><td><code>${e.rne}</code></td><td><span class="badge badge-grey">${e.type}</span></td><td>${e.commune}</td><td class="muted">${e.pronote}</td>
+       <td><button class="btn btn-sm" onclick="toast('Fiche établissement — prototype')">Ouvrir</button></td></tr>`
+    ).join('');
+  }
+  renderEtabs(ETABLISSEMENTS);
+
+  document.getElementById('etab-search').addEventListener('input', (e)=>{
+    const q = e.target.value.toLowerCase();
+    renderEtabs(ETABLISSEMENTS.filter(x => (x.nom+x.commune+x.rne).toLowerCase().includes(q)));
+  });
+
+  const ieSelect = document.getElementById('ie-etab');
+  ETABLISSEMENTS.forEach(e=>{
+    const opt = document.createElement('option');
+    opt.value = e.rne;
+    opt.textContent = `${e.nom} — ${e.rne}`;
+    ieSelect.appendChild(opt);
+  });
+
+  document.getElementById('tbl-eleves-recents').innerHTML = ELEVES.map(el=>{
+    const etab = ETABLISSEMENTS.find(e=>e.rne===el.etab);
+    return `<tr><td><strong>${el.prenom} ${el.nom}</strong></td><td><code>${el.ine}</code></td><td>${el.classe}</td><td>${etab? etab.nom : ''}</td></tr>`;
+  }).join('');
+
+  document.getElementById('tbl-chefs').innerHTML = ETABLISSEMENTS.slice(0,6).map((e,i)=>
+    `<tr><td>${e.nom}</td><td>Compte à créer</td><td><span class="badge badge-amber">En attente</span></td>
+     <td><button class="btn btn-sm" onclick="toast('Création du compte — prototype')">Créer le compte</button></td></tr>`
+  ).join('');
+
+  function creerEtablissement(ev){
+    ev.preventDefault();
+    const nom = document.getElementById('ne-nom').value;
+    ETABLISSEMENTS.unshift({
+      rne: document.getElementById('ne-rne').value || '974XXXXX',
+      nom, type: document.getElementById('ne-type').value.split(' ')[0],
+      commune: document.getElementById('ne-commune').value,
+      pronote: document.getElementById('ne-pronote').value
+    });
+    renderEtabs(ETABLISSEMENTS);
+    toast(`Établissement « ${nom} » créé`);
+    ev.target.reset();
+    go('etablissements');
+    return false;
+  }
+
+  function inscrireEleve(ev){
+    ev.preventDefault();
+    toast('Élève inscrit avec succès');
+    ev.target.reset();
+    return false;
+  }
+
+  // Messagerie
+  let activeMail = 0;
+  function renderMail(){
+    document.getElementById('mail-list').innerHTML = MAILS.map((m,i)=>
+      `<div class="mail-item ${i===activeMail?'active':''}" onclick="selectMail(${i})">
+        <div class="from">${m.from}</div><div class="subj">${m.subject}</div><div class="prev">${m.preview}</div>
+      </div>`).join('');
+    const m = MAILS[activeMail];
+    document.getElementById('mail-body').innerHTML = `<h3 style="margin-bottom:4px">${m.subject}</h3><div class="muted" style="font-size:13px;margin-bottom:16px">De ${m.from}</div><div style="white-space:pre-line;font-size:14px">${m.body}</div>`;
+  }
+  function selectMail(i){ activeMail=i; renderMail(); }
+  renderMail();
+</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chef d'établissement — EduPortail</title>
+<link rel="stylesheet" href="style.css">
+<style>:root{--role-accent:var(--chef);--role-soft:var(--chef-soft);}</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">CE</div>
+      <div class="brand-text">EduPortail<small>Lycée Marguerite Jauzelon</small></div>
+    </a>
+    <span class="role-tag"><span class="dot"></span>Chef d'établissement</span>
+
+    <nav class="nav">
+      <div class="nav-label">Vue d'ensemble</div>
+      <a class="navlink active" data-nav="tableau">Tableau de bord</a>
+
+      <div class="nav-label">Personnes</div>
+      <a class="navlink" data-nav="eleves">Élèves</a>
+      <a class="navlink" data-nav="professeurs">Professeurs</a>
+      <a class="navlink" data-nav="parents">Comptes parents</a>
+
+      <div class="nav-label">Scolarité</div>
+      <a class="navlink" data-nav="livret">Livret scolaire</a>
+      <a class="navlink" data-nav="certificat">Certificat de scolarité</a>
+
+      <div class="nav-label">Communication</div>
+      <a class="navlink" data-nav="messagerie">Messagerie (Mailo)</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="user-chip">
+        <div class="avatar">CE</div>
+        <div><div class="user-name">M. Payet</div><div class="user-role">Proviseur</div></div>
+      </div>
+      <a class="logout" href="index.html">← Changer d'espace</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- TABLEAU DE BORD -->
+    <section id="view-tableau" class="view">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Vue d'ensemble</div>
+          <h1 class="page-title">Tableau de bord de l'établissement</h1>
+          <p class="page-sub">Lycée Marguerite Jauzelon — RNE 9741046U.</p>
+        </div>
+      </div>
+      <div class="grid grid-4" style="margin-bottom:22px">
+        <div class="stat"><div class="n">612</div><div class="l">Élèves inscrits</div></div>
+        <div class="stat"><div class="n">54</div><div class="l">Professeurs</div></div>
+        <div class="stat"><div class="n">598</div><div class="l">Comptes parents actifs</div></div>
+        <div class="stat"><div class="n">7</div><div class="l">Demandes en attente</div></div>
+      </div>
+      <div class="section">
+        <div class="section-head"><div><h2>Dernières demandes</h2><p>Créations de comptes et certificats à traiter.</p></div></div>
+        <table>
+          <thead><tr><th>Demande</th><th>Concerne</th><th>Statut</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>Création compte parent</td><td>Payet Lény — 1re Générale</td><td><span class="badge badge-amber">À valider</span></td><td><button class="btn btn-sm" onclick="toast('Compte parent validé')">Valider</button></td></tr>
+            <tr><td>Certificat de scolarité</td><td>Grondin Nathan — 2nde 4</td><td><span class="badge badge-amber">À éditer</span></td><td><button class="btn btn-sm" onclick="go('certificat')">Éditer</button></td></tr>
+            <tr><td>Ajout établissement Pronote</td><td>Mme Boyer, professeure</td><td><span class="badge badge-green">Traité</span></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ÉLÈVES -->
+    <section id="view-eleves" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Personnes</div><h1 class="page-title">Élèves</h1><p class="page-sub">Élèves rattachés à cet établissement, identifiés par leur INE.</p></div>
+      </div>
+      <div class="note" style="margin-bottom:18px">L'inscription d'un élève se fait uniquement depuis le compte <strong>Super Administrateur</strong> (rattachement par INE et RNE). Le chef d'établissement consulte ici la liste des élèves déjà inscrits.</div>
+      <div class="section">
+        <table>
+          <thead><tr><th>Élève</th><th>INE</th><th>Classe</th><th></th></tr></thead>
+          <tbody id="tbl-eleves"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PROFESSEURS -->
+    <section id="view-professeurs" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Personnes</div><h1 class="page-title">Professeurs</h1><p class="page-sub">Un professeur intervenant dans un second lycée y possède un compte établissement distinct.</p></div>
+        <button class="btn btn-primary" onclick="toast('Formulaire de création — prototype')">+ Créer un compte</button>
+      </div>
+      <div class="section">
+        <table>
+          <thead><tr><th>Professeur</th><th>Matière</th><th>Établissement(s) Pronote</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>Mme Boyer</td><td>Mathématiques</td><td>Jauzelon <span class="badge badge-grey">+ Lépervanche</span></td><td><button class="btn btn-sm" onclick="toast('Fiche professeur — prototype')">Ouvrir</button></td></tr>
+            <tr><td>M. Ricquebourg</td><td>Histoire-Géographie</td><td>Jauzelon</td><td><button class="btn btn-sm" onclick="toast('Fiche professeur — prototype')">Ouvrir</button></td></tr>
+            <tr><td>Mme Lauret</td><td>Anglais</td><td>Jauzelon</td><td><button class="btn btn-sm" onclick="toast('Fiche professeur — prototype')">Ouvrir</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PARENTS -->
+    <section id="view-parents" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Personnes</div><h1 class="page-title">Comptes parents</h1><p class="page-sub">Un compte parent est créé par le chef d'établissement et rattaché à l'INE de son enfant.</p></div>
+        <button class="btn btn-primary" onclick="toast('Formulaire de création — prototype')">+ Créer un compte parent</button>
+      </div>
+      <form class="section grid grid-2" onsubmit="event.preventDefault(); toast('Compte parent créé et rattaché');" style="margin-bottom:22px">
+        <div class="field"><label>Nom du parent</label><input type="text" required></div>
+        <div class="field"><label>Prénom du parent</label><input type="text" required></div>
+        <div class="field"><label>INE de l'enfant à rattacher</label><input type="text" required placeholder="0741234567A"></div>
+        <div class="field"><label>E-mail</label><input type="email" required></div>
+        <div style="grid-column:1/-1"><button class="btn btn-primary" type="submit">Créer le compte</button></div>
+      </form>
+      <div class="section">
+        <table>
+          <thead><tr><th>Parent</th><th>Enfant rattaché</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td>Mme Payet</td><td>Lény Payet — 1re Générale</td><td><span class="badge badge-green">Actif</span></td></tr>
+            <tr><td>M. Grondin</td><td>Nathan Grondin — 2nde 4</td><td><span class="badge badge-green">Actif</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LIVRET SCOLAIRE -->
+    <section id="view-livret" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Scolarité</div><h1 class="page-title">Livret scolaire annuel</h1><p class="page-sub">Saisie manuelle en attendant la remontée automatique depuis Pronote.</p></div>
+      </div>
+      <div class="section">
+        <div class="section-head"><div><h2>Livret — Payet Lény, 1re Générale</h2></div></div>
+        <table>
+          <thead><tr><th>Matière</th><th>Moyenne annuelle</th><th>Appréciation</th></tr></thead>
+          <tbody id="tbl-livret"></tbody>
+        </table>
+        <form class="grid grid-3" style="margin-top:18px" onsubmit="return ajouterMatiere(event)">
+          <div class="field"><label>Matière</label><input type="text" id="lv-matiere" required></div>
+          <div class="field"><label>Moyenne annuelle</label><input type="text" id="lv-moyenne" required placeholder="14,5/20"></div>
+          <div class="field"><label>Appréciation</label><input type="text" id="lv-appreciation" required></div>
+          <div><button class="btn btn-primary" type="submit">Ajouter la matière</button></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- CERTIFICAT DE SCOLARITÉ -->
+    <section id="view-certificat" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Scolarité</div><h1 class="page-title">Certificat de scolarité</h1><p class="page-sub">Génération d'une attestation pour un élève de l'établissement.</p></div>
+      </div>
+      <form class="section grid grid-2" onsubmit="event.preventDefault(); toast('Certificat généré (PDF) — prototype')">
+        <div class="field"><label>Élève</label>
+          <select required><option>Payet Lény — 1re Générale</option><option>Grondin Nathan — 2nde 4</option></select>
+        </div>
+        <div class="field"><label>Année scolaire</label><input type="text" value="2026-2027" required></div>
+        <div style="grid-column:1/-1"><button class="btn btn-primary" type="submit">Générer le certificat</button></div>
+      </form>
+    </section>
+
+    <!-- MESSAGERIE -->
+    <section id="view-messagerie" class="view" style="display:none">
+      <div class="topbar">
+        <div><div class="eyebrow">Communication</div><h1 class="page-title">Messagerie (Mailo)</h1><p class="page-sub">Boîte de messages de l'établissement.</p></div>
+      </div>
+      <div class="mail-layout">
+        <div class="mail-list" id="mail-list"></div>
+        <div class="mail-body" id="mail-body"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script>
+  function go(id){
+    document.querySelectorAll('.view').forEach(v=>v.style.display='none');
+    document.getElementById('view-'+id).style.display='block';
+    document.querySelectorAll('.navlink').forEach(a=>a.classList.toggle('active', a.dataset.nav===id));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.navlink').forEach(a=>{
+    a.addEventListener('click', e=>{ e.preventDefault(); go(a.dataset.nav); });
+  });
+
+  document.getElementById('tbl-eleves').innerHTML = ELEVES.map(el=>
+    `<tr><td><strong>${el.prenom} ${el.nom}</strong></td><td><code>${el.ine}</code></td><td>${el.classe}</td>
+     <td><button class="btn btn-sm" onclick="toast('Fiche élève — prototype')">Ouvrir</button></td></tr>`
+  ).join('');
+
+  const LIVRET = [
+    {matiere:"Mathématiques", moyenne:"14,5/20", appreciation:"Bon trimestre, poursuivre les efforts en géométrie."},
+    {matiere:"Français", moyenne:"12,8/20", appreciation:"Participation à renforcer à l'oral."},
+  ];
+  function renderLivret(){
+    document.getElementById('tbl-livret').innerHTML = LIVRET.map(l=>
+      `<tr><td>${l.matiere}</td><td>${l.moyenne}</td><td>${l.appreciation}</td></tr>`).join('');
+  }
+  renderLivret();
+  function ajouterMatiere(ev){
+    ev.preventDefault();
+    LIVRET.push({
+      matiere: document.getElementById('lv-matiere').value,
+      moyenne: document.getElementById('lv-moyenne').value,
+      appreciation: document.getElementById('lv-appreciation').value
+    });
+    renderLivret();
+    ev.target.reset();
+    toast('Matière ajoutée au livret');
+    return false;
+  }
+
+  let activeMail = 0;
+  function renderMail(){
+    document.getElementById('mail-list').innerHTML = MAILS.map((m,i)=>
+      `<div class="mail-item ${i===activeMail?'active':''}" onclick="selectMail(${i})">
+        <div class="from">${m.from}</div><div class="subj">${m.subject}</div><div class="prev">${m.preview}</div>
+      </div>`).join('');
+    const m = MAILS[activeMail];
+    document.getElementById('mail-body').innerHTML = `<h3 style="margin-bottom:4px">${m.subject}</h3><div class="muted" style="font-size:13px;margin-bottom:16px">De ${m.from}</div><div style="white-space:pre-line;font-size:14px">${m.body}</div>`;
+  }
+  function selectMail(i){ activeMail=i; renderMail(); }
+  renderMail();
+</script>
+</body>
+</html>

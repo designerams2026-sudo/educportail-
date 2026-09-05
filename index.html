@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduPortail — Académie de La Réunion</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="portal">
+
+  <div class="portal-head">
+    <div class="kicker">Prototype — sans connexion à une base de données</div>
+    <h1>EduPortail de La Réunion</h1>
+    <p>Un espace par profil, une couleur par espace. Choisissez votre profil pour accéder à votre tableau de bord.</p>
+  </div>
+
+  <div class="space-grid">
+
+    <a class="space-card" style="--card-accent:var(--admin);--card-soft:var(--admin-soft)" href="#" data-role="admin">
+      <div class="mark">SA</div>
+      <h3>Super administrateur</h3>
+      <p>Établissements de l'académie, création de comptes chefs d'établissement, vue d'ensemble.</p>
+      <span class="go">Ouvrir l'espace →</span>
+    </a>
+
+    <a class="space-card" style="--card-accent:var(--chef);--card-soft:var(--chef-soft)" href="#" data-role="chef">
+      <div class="mark">CE</div>
+      <h3>Chef d'établissement</h3>
+      <p>Élèves, professeurs, comptes parents, livret scolaire, certificats.</p>
+      <span class="go">Ouvrir l'espace →</span>
+    </a>
+
+    <a class="space-card" style="--card-accent:var(--prof);--card-soft:var(--prof-soft)" href="#" data-role="prof">
+      <div class="mark">P</div>
+      <h3>Professeur</h3>
+      <p>Classes, appréciations, messagerie, site web du lycée.</p>
+      <span class="go">Ouvrir l'espace →</span>
+    </a>
+
+    <a class="space-card" style="--card-accent:var(--eleve);--card-soft:var(--eleve-soft)" href="#" data-role="eleve">
+      <div class="mark">É</div>
+      <h3>Élève</h3>
+      <p>Livret, bulletins, orientation, messagerie, site du lycée.</p>
+      <span class="go">Ouvrir l'espace →</span>
+    </a>
+
+    <a class="space-card" style="--card-accent:var(--parent);--card-soft:var(--parent-soft)" href="#" data-role="parent">
+      <div class="mark">PA</div>
+      <h3>Parent</h3>
+      <p>Suivi de la scolarité et validation des vœux d'orientation.</p>
+      <span class="go">Ouvrir l'espace →</span>
+    </a>
+
+  </div>
+
+  <!-- Panneaux de connexion (un par rôle) -->
+  <form class="login-panel" id="panel-admin" data-target="super-admin.html">
+    <span class="role-tag" style="--role-accent:var(--admin);--role-soft:var(--admin-soft)"><span class="dot"></span>Super administrateur</span>
+    <div class="field"><label>Identifiant académique</label><input type="text" placeholder="prenom.nom@ac-reunion.fr" required></div>
+    <div class="field"><label>Mot de passe</label><input type="password" placeholder="••••••••" required></div>
+    <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center">Se connecter</button>
+  </form>
+
+  <form class="login-panel" id="panel-chef" data-target="chef-etablissement.html">
+    <span class="role-tag" style="--role-accent:var(--chef);--role-soft:var(--chef-soft)"><span class="dot"></span>Chef d'établissement</span>
+    <div class="field"><label>Établissement</label>
+      <select required>
+        <option value="">Sélectionner un établissement…</option>
+      </select>
+    </div>
+    <div class="field"><label>Identifiant</label><input type="text" placeholder="prenom.nom" required></div>
+    <div class="field"><label>Mot de passe</label><input type="password" placeholder="••••••••" required></div>
+    <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center">Se connecter</button>
+  </form>
+
+  <form class="login-panel" id="panel-prof" data-target="professeur.html">
+    <span class="role-tag" style="--role-accent:var(--prof);--role-soft:var(--prof-soft)"><span class="dot"></span>Professeur</span>
+    <div class="field"><label>Identifiant Pronote</label><input type="text" placeholder="prenom.nom" required></div>
+    <div class="field"><label>Mot de passe</label><input type="password" placeholder="••••••••" required></div>
+    <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center">Se connecter</button>
+  </form>
+
+  <form class="login-panel" id="panel-eleve" data-target="eleve.html">
+    <span class="role-tag" style="--role-accent:var(--eleve);--role-soft:var(--eleve-soft)"><span class="dot"></span>Élève</span>
+    <div class="field"><label>INE</label><input type="text" placeholder="0741234567A" required></div>
+    <div class="field"><label>Mot de passe</label><input type="password" placeholder="••••••••" required></div>
+    <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center">Se connecter</button>
+  </form>
+
+  <form class="login-panel" id="panel-parent" data-target="parent.html">
+    <span class="role-tag" style="--role-accent:var(--parent);--role-soft:var(--parent-soft)"><span class="dot"></span>Parent</span>
+    <div class="field"><label>Identifiant</label><input type="text" placeholder="prenom.nom" required></div>
+    <div class="field"><label>Mot de passe</label><input type="password" placeholder="••••••••" required></div>
+    <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center">Se connecter</button>
+  </form>
+
+  <footer class="foot">Académie de La Réunion · Environnement de démonstration — aucune donnée réelle</footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+  const cards = document.querySelectorAll('.space-card');
+  const panels = document.querySelectorAll('.login-panel');
+
+  // Remplit la liste des établissements dans le panneau "chef d'établissement"
+  const sel = document.querySelector('#panel-chef select');
+  ETABLISSEMENTS.forEach(e=>{
+    const opt = document.createElement('option');
+    opt.textContent = `${e.nom} — ${e.commune}`;
+    sel.appendChild(opt);
+  });
+
+  cards.forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const role = card.dataset.role;
+      panels.forEach(p=> p.classList.toggle('open', p.id === 'panel-'+role));
+      document.getElementById('panel-'+role).scrollIntoView({behavior:'smooth', block:'center'});
+    });
+  });
+
+  panels.forEach(panel=>{
+    panel.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      window.location.href = panel.dataset.target;
+    });
+  });
+</script>
+</body>
+</html>
